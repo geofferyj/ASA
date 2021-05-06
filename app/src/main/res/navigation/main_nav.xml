@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.geofferyj.asa.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_reading_progress"
+        android:name="com.geofferyj.asa.ui.reading_progress.ReadingProgressFragment"
+        tools:layout="@layout/fragment_reading_progress" />
+
+    <fragment
+        android:id="@+id/navigation_reading_timetable"
+        android:name="com.geofferyj.asa.ui.reading_timetable.NotificationsFragment"
+        tools:layout="@layout/fragment_reading_timetable" />
+    <fragment
+        android:id="@+id/navigation_cgpa_projector"
+        android:name="com.geofferyj.asa.ui.cgpa_projector.CgpaProjectorFragment"
+        android:label="fragment_cgpa_projector"
+        tools:layout="@layout/fragment_cgpa_projector" />
+    <fragment
+        android:id="@+id/navigation_assignments"
+        android:name="com.geofferyj.asa.ui.assignments.AssignmentsFragment"
+        android:label="fragment_assignments"
+        tools:layout="@layout/fragment_assignments" />
+</navigation>
