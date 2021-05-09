@@ -2,6 +2,7 @@ package com.geofferyj.asa.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.geofferyj.asa.R
 import com.geofferyj.asa.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.EntryXComparator
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -36,49 +41,49 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val chartData1 = mutableListOf<Entry>()
-        chartData1.add(Entry(1F, 2F))
-        chartData1.add(Entry(2F, 4F))
-        chartData1.add(Entry(3F, 6F))
-        chartData1.add(Entry(4F, 8F))
-        chartData1.add(Entry(5F, 10F))
-        chartData1.add(Entry(6F, 12F))
-
 
         val chartData2 = mutableListOf<Entry>()
+        chartData2.add(Entry(0F, 2F))
         chartData2.add(Entry(1F, 2F))
         chartData2.add(Entry(2F, 4F))
         chartData2.add(Entry(3F, 3F))
         chartData2.add(Entry(4F, 8F))
         chartData2.add(Entry(5F, 1F))
-        chartData2.add(Entry(6F, 0F))
+        chartData2.add(Entry(6F, 9F))
+
+        Collections.sort(chartData2, EntryXComparator())
+        Log.d("MMMMM", "${chartData2.size}")
+
 
 
         val xAxis = mutableListOf<String>()
-        xAxis.add("JAN")
-        xAxis.add("FEB")
-        xAxis.add("MAR")
-        xAxis.add("APR")
-        xAxis.add("MAY")
-        xAxis.add("JUN")
+        xAxis.add("Mon")
+        xAxis.add("Tue")
+        xAxis.add("Wed")
+        xAxis.add("Thur")
+        xAxis.add("Fri")
+        xAxis.add("Sat")
+        xAxis.add("Sun")
 
 
-        val lineDataSet1 = LineDataSet(chartData1,"mon")
-        lineDataSet1.color = Color.RED
-        lineDataSet1.valueFormatter = object : ValueFormatter(){
+        val lineDataSet = LineDataSet(chartData2,"tue")
+
+        lineDataSet.valueFormatter = object : ValueFormatter(){
             override fun getFormattedValue(value: Float): String {
                 return ""
             }
         }
-        lineDataSet1.axisDependency = YAxis.AxisDependency.LEFT
-        val lineDataSet2 = LineDataSet(chartData2,"tue")
 
 
 
         val valueFormatter = object : ValueFormatter(){
             override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+                Log.d("MMMMM", "${axis?.mEntries?.size}")
+
                 return xAxis[value.toInt()]
             }
+
+
         }
 
         val valueFormatter2 = object : ValueFormatter(){
@@ -88,18 +93,20 @@ class HomeFragment : Fragment() {
         }
 
         binding.rvClasses.adapter = RvAdapter()
-        binding.lineChart.data = LineData(lineDataSet1, lineDataSet2)
+        binding.lineChart.data = LineData(lineDataSet)
+        binding.lineChart.invalidate()
         binding.lineChart.apply {
             description.isEnabled = false
-            axisLeft.isEnabled = true
-            axisLeft.setDrawZeroLine(true)
+            axisLeft.isEnabled = false
             axisRight.isEnabled = false
-//            getXAxis().setAvoidFirstLastClipping(true);
-            getXAxis().setDrawGridLines(false)
+            getXAxis().setAvoidFirstLastClipping(true);
+            getXAxis().setDrawGridLines(true)
+            getXAxis().granularity = 1f
             getXAxis().valueFormatter = valueFormatter
 
             legend.isEnabled = false
-            getXAxis().labelCount = 6
+            getXAxis().position = XAxis.XAxisPosition.BOTTOM
+
 
 
 
